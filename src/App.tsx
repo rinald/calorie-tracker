@@ -1,9 +1,13 @@
 import React from 'react'
+import SearchBar from './components/SearchBar'
 
-const App = () => (
-  <div className='container'>
-    <div className='font-bold text-3xl text-center'>Hello World</div>
-  </div>
-)
+const App = () => {
+  return (
+    <div>
+      <div className='text-2xl'>Food API</div>
+      <SearchBar />
+    </div>
+  )
+}
 
 export default App
