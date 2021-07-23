@@ -1,10 +1,16 @@
-interface Measure {
+interface IField {
+  type: string
+  value: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+}
+
+interface IMeasure {
   uri: string
   label: string
   weight: number
 }
 
-interface Nutrients {
+interface INutrients {
   ENERC_KCAL: number
   PROCNT: number
   FAT: number
@@ -12,36 +18,36 @@ interface Nutrients {
   FIBTG: number
 }
 
-interface FoodInfo {
+interface IFoodInfo {
   foodId: string
   label: string
-  nutrients: Nutrients
+  nutrients: INutrients
   category: string
   categoryLabel: string
-  image: string
+  image?: string
   brand?: string
   foodContentsLabel?: string
-  servingSized?: Array<Measure>
+  servingSized?: Array<IMeasure>
   servingsPerContainer?: number
 }
 
-interface FoodData {
-  food: FoodInfo
-  measures: Array<Measure>
+interface IFoodData {
+  food: IFoodInfo
+  measures: Array<IMeasure>
 }
 
-interface NextPage {
+interface INextPage {
   next: {
     title: string
     href: string
   }
 }
 
-interface ParserResponse {
+interface IDatabaseResponse {
   text: string
-  parsed: Array<FoodData>
-  hints: Array<FoodData>
-  _links?: NextPage
+  parsed: Array<IFoodData>
+  hints: Array<IFoodData>
+  _links?: INextPage
 }
 
-export { ParserResponse }
+export { IDatabaseResponse, IField }
