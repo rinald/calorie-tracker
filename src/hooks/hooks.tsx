@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import type { IDatabaseResponse, IField } from '../util'
+import type { IDatabaseResponse, IField } from '../../types/interfaces'
 
 const BASE_URL = 'https://api.edamam.com'
 const APP_ID = 'cde0b431'

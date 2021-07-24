@@ -1,9 +1,4 @@
-interface IField {
-  type: string
-  value: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-}
-
+// Private interfaces
 interface IMeasure {
   uri: string
   label: string
@@ -36,18 +31,25 @@ interface IFoodData {
   measures: Array<IMeasure>
 }
 
-interface INextPage {
+interface ILinks {
   next: {
     title: string
     href: string
   }
 }
 
+// Public interfaces
 interface IDatabaseResponse {
   text: string
   parsed: Array<IFoodData>
   hints: Array<IFoodData>
-  _links?: INextPage
+  _links?: ILinks
 }
 
-export { IDatabaseResponse, IField }
+interface IField {
+  type: string
+  value: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+}
+
+export { IDatabaseResponse, IField, IFoodData, INutrients }

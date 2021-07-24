@@ -1,6 +1,7 @@
 import React from 'react'
 
-import type { IField } from '../util'
+import type { IField } from '../../types/interfaces'
+import { Search24Filled } from '@fluentui/react-icons'
 
 interface Props {
   textField: IField
@@ -9,14 +10,18 @@ interface Props {
 
 const SearchBar: React.FC<Props> = ({ textField, onSearch }) => (
   <div>
-    <form className='w-full max-w-sm'>
-      <div className='flex items-center border-b border-indigo-500 py-2'>
+    <form className='flex flex-row w-full max-w-sm justify-between m-auto'>
+      <div>
         <input
           {...textField}
-          className='appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none'
+          className='bg-transparent w-full text-gray-700 p-4 my-4 leading-tight border rounded-md focus:outline-none focus:ring-1 focus:border-indigo-700'
         />
       </div>
-      <button onClick={onSearch}>Search</button>
+      <button
+        className='flex flex-row gap-2 p-2 bg-indigo-600 border border-indigo-700 rounded-xl my-auto text-white'
+        onClick={onSearch}>
+        <Search24Filled /> Search
+      </button>
     </form>
   </div>
 )
