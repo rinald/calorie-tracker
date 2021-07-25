@@ -10,8 +10,6 @@ const APP_KEY = 'c3065548cc9be81f078ee6777a929550'
 const getUrl = (endpoint: string) =>
   `${BASE_URL}/${endpoint}?app_id=${APP_ID}&app_key=${APP_KEY}`
 
-// type FieldHook = (type: string) => IField
-
 const useField: (type: string) => IField = type => {
   const [value, setValue] = useState('')
 
@@ -47,14 +45,24 @@ const useSearch = (query: string) => {
     getSearchResults()
   }, [query])
 
-  const loadNextPage = async () => {
+  // const loadNextPage = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       results?._links?.next.href ||
+  //         `${getUrl(
+  //           'api/food-database/v2/parser',
+  //         )}&ingr=${query}&nutrition-type=cooking`,
+  //     )
+
+  //     setResults(response.data)
+  //   } catch (error) {
+  //     setResults(null)
+  //   }
+  // }
+
+  const loadPage = async (href: string) => {
     try {
-      const response = await axios.get(
-        results?._links?.next.href ||
-          `${getUrl(
-            'api/food-database/v2/parser',
-          )}&ingr=${query}&nutrition-type=cooking`,
-      )
+      const response = await axios.get(href)
 
       setResults(response.data)
     } catch (error) {
@@ -62,7 +70,63 @@ const useSearch = (query: string) => {
     }
   }
 
-  return { results, loadNextPage }
+  const getLinks = async (n: number = 5) => {
+    const links: string[] = []
+
+    let response = await axios.get(
+      `${getUrl(
+        'api/food-database/v2/parser',
+      )}&ingr=${query}&nutrition-type=cooking`,
+    )
+
+    links.push(
+      `${getUrl(
+        'api/food-database/v2/parser',
+      )}&ingr=${query}&nutrition-type=cooking`,
+    )
+
+    for (let i = 0; i < n - 1; i++) {
+      response = await axios.get(response.data?._links.next.href)
+
+      if (response.data?._links === undefined) {
+        break
+      }
+
+      links.push(response.data?._links?.next?.href)
+    }
+
+    return links
+  }
+
+  const getAllLinks = async () => {
+    const links = []
+
+    let response = await axios.get(
+      `${getUrl(
+        'api/food-database/v2/parser',
+      )}&ingr=${query}&nutrition-type=cooking`,
+    )
+
+    links.push(
+      `${getUrl(
+        'api/food-database/v2/parser',
+      )}&ingr=${query}&nutrition-type=cooking`,
+    )
+
+    while (response.data?._links !== undefined) {
+      console.log(response.data?._links)
+      response = await axios.get(response.data?._links.next.href)
+      if (response.data?._links === undefined) {
+        break
+      }
+
+      links.push(response.data?._links?.next?.href)
+    }
+
+    return links
+  }
+
+  return { results, getLinks, loadPage }
 }
 
 export { useField, useSearch, IField }

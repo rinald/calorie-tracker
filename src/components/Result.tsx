@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
+import { Pie, Doughnut } from 'react-chartjs-2'
 
 import type { IFoodData } from '../../types/interfaces'
-import NutritionTable from './NutritionTable'
+// import NutritionTable from './NutritionTable'
 
 interface Props {
   result: IFoodData
@@ -13,6 +14,43 @@ const Result: React.FC<Props> = ({ result }) => {
 
   const toggleExpand = () => {
     setExpanded(!expanded)
+  }
+
+  const showChart = () => {
+    const nutrients = result.food.nutrients
+
+    const data = {
+      labels: ['Protein', 'Carbs', 'Fat', 'Fiber'],
+      datasets: [
+        {
+          label: 'Nutritional facts',
+          data: [
+            nutrients.PROCNT,
+            nutrients.CHOCDF,
+            nutrients.FAT,
+            nutrients.FIBTG,
+          ],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+      options: {
+        responsive: true,
+      },
+    }
+
+    return <Doughnut data={data} />
   }
 
   return (
@@ -29,8 +67,9 @@ const Result: React.FC<Props> = ({ result }) => {
       <br />
       {expanded && (
         <div>
-          <NutritionTable nutrients={result.food.nutrients} />
-          <br />
+          {showChart()}
+          {/* <NutritionTable nutrients={result.food.nutrients} /> */}
+          {/* <br /> */}
         </div>
       )}
 

@@ -17,11 +17,13 @@ specifiers:
   autoprefixer: ^10.2.5
   axios: ^0.21.1
   chai: ^4.2.0
+  chart.js: ^3.5.0
   express: ^4.17.1
   postcss: ^8.2.9
   postcss-cli: ^8.3.1
   prettier: ^2.0.5
   react: ^17.0.0
+  react-chartjs-2: ^3.0.4
   react-dom: ^17.0.0
   react-router-dom: ^5.2.0
   snowpack: ^3.0.1
@@ -31,8 +33,10 @@ specifiers:
 dependencies:
   '@fluentui/react-icons': 1.1.135
   axios: 0.21.1
+  chart.js: 3.5.0
   express: 4.17.1
   react: 17.0.2
+  react-chartjs-2: 3.0.4_chart.js@3.5.0+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
 
@@ -1189,6 +1193,10 @@ packages:
       supports-color: 7.2.0
     dev: true
 
+  /chart.js/3.5.0:
+    resolution: {integrity: sha512-J1a4EAb1Gi/KbhwDRmoovHTRuqT8qdF0kZ4XgwxpGethJHUdDrkqyPYwke0a+BuvSeUxPf8Cos6AX2AB8H8GLA==}
+    dev: false
+
   /check-error/1.0.2:
     resolution: {integrity: sha1-V00xLt2Iu13YkS6Sht1sCu1KrII=}
     dev: true
@@ -2313,7 +2321,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-update/4.0.0:
     resolution: {integrity: sha512-9fkkDevMefjg0mmzWFBW8YkFP91OrizzkW3diF7CpG+S2EYdy4+TVfGwz1zeF8x7hCx1ovSPTOE9Ngib74qqUg==}
@@ -2921,6 +2928,17 @@ packages:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
     dev: true
+
+  /react-chartjs-2/3.0.4_chart.js@3.5.0+react@17.0.2:
+    resolution: {integrity: sha512-pcbFNpkPMTkGXXJ7k7hnukbRD0ZV01qB6JQY1ontITc2IYvhGlK6BBDy28VeydYs1Dl/c5ZpRgRVEtT5GUnxcQ==}
+    peerDependencies:
+      chart.js: ^3.1.0
+      react: ^16.8.0 || ^17.0.0
+    dependencies:
+      chart.js: 3.5.0
+      lodash: 4.17.21
+      react: 17.0.2
+    dev: false
 
   /react-dom/17.0.2_react@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
