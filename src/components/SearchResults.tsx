@@ -20,7 +20,7 @@ const SearchResults: React.FC<Props> = ({ query }) => {
   return (
     <div>
       <div>
-        <div className='grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 bg-gray-100 items-start'>
+        <div className='flex flex-wrap flex-col justify-start gap-2 md:max-h-2000 lg:max-h-1500 bg-gray-100'>
           {searchResults?.map((result, index) => (
             <Result key={index} result={result} />
           ))}

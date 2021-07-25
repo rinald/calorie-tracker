@@ -5,3 +5,23 @@
 button:focus {
   outline: none;
 }
+
+@layer utilities {
+  @variants responsive {
+    .max-h-1000 {
+      max-height: 1000px;
+    }
+
+    .max-h-1200 {
+      max-height: 1200px;
+    }
+
+    .max-h-1500 {
+      max-height: 1500px;
+    }
+
+    .max-h-2000 {
+      max-height: 2000px;
+    }
+  }
+}

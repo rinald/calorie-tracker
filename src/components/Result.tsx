@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
-import { Pie, Doughnut } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 
 import type { IFoodData } from '../../types/interfaces'
-// import NutritionTable from './NutritionTable'
 
 interface Props {
   result: IFoodData
@@ -46,7 +45,7 @@ const Result: React.FC<Props> = ({ result }) => {
         },
       ],
       options: {
-        responsive: true,
+        responsive: false,
       },
     }
 
@@ -54,7 +53,7 @@ const Result: React.FC<Props> = ({ result }) => {
   }
 
   return (
-    <div className='bg-gray-50 border-gray-200 border rounded-lg py-2 px-2 m-4'>
+    <div className='break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
       <div className='text-2xl font-bold'>{result.food.label}</div>
       <div className='flex flex-row flex-auto gap-4'>
         <div>
@@ -66,10 +65,8 @@ const Result: React.FC<Props> = ({ result }) => {
       </div>
       <br />
       {expanded && (
-        <div>
+        <div className='mx-auto w-64 h-64 lg:w-72 lg:h-72 xl:w-96 xl:h-96 p-4'>
           {showChart()}
-          {/* <NutritionTable nutrients={result.food.nutrients} /> */}
-          {/* <br /> */}
         </div>
       )}
 
@@ -79,7 +76,7 @@ const Result: React.FC<Props> = ({ result }) => {
           onClick={toggleExpand}>
           {expanded ? 'Show less' : 'Show more'} <Info24Regular />
         </button>
-        <button className='px-4 py-2 bg-indigo-500 rounded-full text-white font-bold hover:bg-indigo-300'>
+        <button className='p-2 bg-blue-500 rounded-md text-white font-bold hover:bg-blue-300'>
           <Add24Regular />
         </button>
       </div>
