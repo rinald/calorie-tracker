@@ -17,6 +17,8 @@ const SearchResults: React.FC<Props> = ({ query }) => {
     getLinks().then(links => setLinks(links))
   }, [query])
 
+  console.log('rerender')
+
   return (
     <div>
       <div>

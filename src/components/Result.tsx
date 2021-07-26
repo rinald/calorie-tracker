@@ -52,6 +52,8 @@ const Result: React.FC<Props> = ({ result }) => {
     return <Doughnut data={data} />
   }
 
+  // console.log('rerender')
+
   return (
     <div className='break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
       <div className='text-2xl font-bold'>{result.food.label}</div>

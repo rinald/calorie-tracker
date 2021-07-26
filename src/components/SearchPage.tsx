@@ -5,17 +5,19 @@ import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
 
 const SearchPage = () => {
-  const textField = useField('text')
   const [query, setQuery] = useState('')
 
-  const search: React.MouseEventHandler<HTMLButtonElement> = event => {
+  const search = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    value: string,
+  ) => {
     event.preventDefault()
-    setQuery(textField.value)
+    setQuery(value)
   }
 
   return (
     <div>
-      <SearchBar textField={textField} onSearch={search} />
+      <SearchBar onSearch={search} />
       <SearchResults query={query} />
     </div>
   )
