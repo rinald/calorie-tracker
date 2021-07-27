@@ -6,9 +6,10 @@ import type { IFoodData } from '../../types/interfaces'
 
 interface Props {
   result: IFoodData
+  addFood
 }
 
-const Result: React.FC<Props> = ({ result }) => {
+const Result: React.FC<Props> = ({ result, addFood }) => {
   const [expanded, setExpanded] = useState(false)
 
   const toggleExpand = () => {
@@ -78,7 +79,9 @@ const Result: React.FC<Props> = ({ result }) => {
           onClick={toggleExpand}>
           {expanded ? 'Show less' : 'Show more'} <Info24Regular />
         </button>
-        <button className='p-2 bg-blue-500 rounded-md text-white font-bold hover:bg-blue-300'>
+        <button
+          className='p-2 bg-blue-500 rounded-md text-white font-bold hover:bg-blue-300'
+          onClick={() => addFood(result)}>
           <Add24Regular />
         </button>
       </div>

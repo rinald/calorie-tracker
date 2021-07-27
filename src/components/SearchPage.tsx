@@ -4,7 +4,7 @@ import { useField } from '../hooks/hooks'
 import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
 
-const SearchPage = () => {
+const SearchPage = ({ addFood }) => {
   const [query, setQuery] = useState('')
 
   const search = (
@@ -18,7 +18,7 @@ const SearchPage = () => {
   return (
     <div>
       <SearchBar onSearch={search} />
-      <SearchResults query={query} />
+      <SearchResults query={query} addFood={addFood} />
     </div>
   )
 }

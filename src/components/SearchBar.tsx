@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { useField } from '../hooks/hooks'
-// import type { IField } from '../../types/interfaces'
 import { Search24Filled } from '@fluentui/react-icons'
 
 interface Props {

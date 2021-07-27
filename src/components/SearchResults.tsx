@@ -6,25 +6,26 @@ import BottomNavigation from './BottomNavigation'
 
 interface Props {
   query: string
+  addFood
 }
 
-const SearchResults: React.FC<Props> = ({ query }) => {
+const SearchResults: React.FC<Props> = ({ query, addFood }) => {
   const { results, getLinks, loadPage } = useSearch(query)
   const [links, setLinks] = useState<string[] | null>(null)
   const searchResults = results?.hints
 
   useEffect(() => {
-    getLinks().then(links => setLinks(links))
+    if (query !== '') {
+      getLinks().then(links => setLinks(links))
+    }
   }, [query])
-
-  console.log('rerender')
 
   return (
     <div>
       <div>
         <div className='flex flex-wrap flex-col justify-start gap-2 md:max-h-2000 lg:max-h-1500 bg-gray-100'>
           {searchResults?.map((result, index) => (
-            <Result key={index} result={result} />
+            <Result key={index} result={result} addFood={addFood} />
           ))}
         </div>
       </div>
