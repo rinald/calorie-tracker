@@ -13,7 +13,7 @@ const BottomNavigation: React.FC<Props> = ({ links, loadPage }) => {
           <button
             key={i}
             onClick={() => loadPage(link)}
-            className='flex flex-row gap-2 py-2 px-4 bg-gray-200 border border-gray-300 rounded-md font-bold'>
+            className='flex flex-row gap-2 py-2 px-4 bg-gray-100 border border-gray-300 rounded-md font-bold'>
             {i + 1}
           </button>
         ))}

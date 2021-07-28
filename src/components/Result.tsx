@@ -1,16 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
 import { Doughnut } from 'react-chartjs-2'
 
-import type { IFoodData } from '../../types/interfaces'
+import { NutritionContext } from '../App'
+import type { IFoodData, INutrients } from '../../types/interfaces'
 
 interface Props {
   result: IFoodData
-  addFood
 }
 
-const Result: React.FC<Props> = ({ result, addFood }) => {
+const Result: React.FC<Props> = ({ result }) => {
   const [expanded, setExpanded] = useState(false)
+  const [nutrients, setNutrients] = useContext(NutritionContext)
+
+  const addFood = (data: IFoodData) => {
+    const _nutrients = data.food.nutrients
+
+    const newNutrients: INutrients = {
+      ENERC_KCAL: nutrients.ENERC_KCAL + _nutrients.ENERC_KCAL,
+      PROCNT: nutrients.PROCNT + _nutrients.PROCNT,
+      CHOCDF: nutrients.CHOCDF + _nutrients.CHOCDF,
+      FAT: nutrients.FAT + _nutrients.FAT,
+      FIBTG: nutrients.FIBTG + _nutrients.FIBTG,
+    }
+
+    setNutrients(newNutrients)
+  }
 
   const toggleExpand = () => {
     setExpanded(!expanded)
@@ -46,14 +61,12 @@ const Result: React.FC<Props> = ({ result, addFood }) => {
         },
       ],
       options: {
-        responsive: false,
+        responsive: true,
       },
     }
 
     return <Doughnut data={data} />
   }
-
-  // console.log('rerender')
 
   return (
     <div className='break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
@@ -64,14 +77,11 @@ const Result: React.FC<Props> = ({ result, addFood }) => {
             <div>Brand: {result.food.brand}</div>
           )}
           <div>Category: {result.food.category}</div>
+          {expanded && <div>Calories: {result.food.nutrients.ENERC_KCAL}</div>}
         </div>
       </div>
       <br />
-      {expanded && (
-        <div className='mx-auto w-64 h-64 lg:w-72 lg:h-72 xl:w-96 xl:h-96 p-4'>
-          {showChart()}
-        </div>
-      )}
+      {expanded && <div className='mx-auto p-4'>{showChart()}</div>}
 
       <div className='flex flex-row gap-2 justify-between'>
         <button
@@ -80,7 +90,7 @@ const Result: React.FC<Props> = ({ result, addFood }) => {
           {expanded ? 'Show less' : 'Show more'} <Info24Regular />
         </button>
         <button
-          className='p-2 bg-blue-500 rounded-md text-white font-bold hover:bg-blue-300'
+          className='p-2 bg-blue-500 border border-blue-600 rounded-md text-white'
           onClick={() => addFood(result)}>
           <Add24Regular />
         </button>

@@ -4,12 +4,13 @@ import { useSearch } from '../hooks/hooks'
 import Result from './Result'
 import BottomNavigation from './BottomNavigation'
 
+import Masonry from 'react-masonry-css'
+
 interface Props {
   query: string
-  addFood
 }
 
-const SearchResults: React.FC<Props> = ({ query, addFood }) => {
+const SearchResults: React.FC<Props> = ({ query }) => {
   const { results, getLinks, loadPage } = useSearch(query)
   const [links, setLinks] = useState<string[] | null>(null)
   const searchResults = results?.hints
@@ -23,11 +24,14 @@ const SearchResults: React.FC<Props> = ({ query, addFood }) => {
   return (
     <div>
       <div>
-        <div className='flex flex-wrap flex-col justify-start gap-2 md:max-h-2000 lg:max-h-1500 bg-gray-100'>
+        <Masonry
+          breakpointCols={{ default: 4, 1024: 3, 768: 2, 640: 1 }}
+          className='my-masonry-grid'
+          columnClassName='my-masonry-grid-column'>
           {searchResults?.map((result, index) => (
-            <Result key={index} result={result} addFood={addFood} />
+            <Result key={index} result={result} />
           ))}
-        </div>
+        </Masonry>
       </div>
 
       <BottomNavigation links={links} loadPage={loadPage} />

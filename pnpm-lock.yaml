@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@fluentui/react-icons': ^1.1.135
+  '@headlessui/react': ^1.3.0
   '@snowpack/plugin-dotenv': ^2.0.5
   '@snowpack/plugin-postcss': ^1.2.2
   '@snowpack/plugin-react-refresh': ^2.4.0
@@ -26,6 +27,7 @@ specifiers:
   react: ^17.0.0
   react-chartjs-2: ^3.0.4
   react-dom: ^17.0.0
+  react-masonry-css: ^1.0.16
   react-router-dom: ^5.2.0
   snowpack: ^3.0.1
   tailwindcss: ^2.0.4
@@ -33,12 +35,14 @@ specifiers:
 
 dependencies:
   '@fluentui/react-icons': 1.1.135
+  '@headlessui/react': 1.3.0_react-dom@17.0.2+react@17.0.2
   axios: 0.21.1
   chart.js: 3.5.0
   express: 4.17.1
   react: 17.0.2
   react-chartjs-2: 3.0.4_chart.js@3.5.0+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-masonry-css: 1.0.16_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
 
 devDependencies:
@@ -315,6 +319,17 @@ packages:
     dependencies:
       purgecss: 3.1.3
     dev: true
+
+  /@headlessui/react/1.3.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-2gqTO6BQ3Jr8vDX1B67n1gl6MGKTt6DBmR+H0qxwj0gTMnR2+Qpktj8alRWxsZBODyOiBb77QSQpE/6gG3MX4Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /@jest/types/26.6.2:
     resolution: {integrity: sha512-fC6QCp7Sc5sX6g8Tvbmj4XUTbyrik0akgRy03yjXbQaBWWNWGE7SGtJk98m0N8nzegD/7SggrUlivxo5ax4KWQ==}
@@ -2999,6 +3014,14 @@ packages:
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
     dev: true
+
+  /react-masonry-css/1.0.16_react@17.0.2:
+    resolution: {integrity: sha512-KSW0hR2VQmltt/qAa3eXOctQDyOu7+ZBevtKgpNDSzT7k5LA/0XntNa9z9HKCdz3QlxmJHglTZ18e4sX4V8zZQ==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /react-refresh/0.9.0:
     resolution: {integrity: sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==}

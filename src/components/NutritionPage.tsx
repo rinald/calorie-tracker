@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
+import { NutritionContext } from '../App'
 
 import { Doughnut } from 'react-chartjs-2'
 
-const NutritionPage = ({ nutrients }) => {
+const NutritionPage = () => {
+  const [nutrients, setNutrients] = useContext(NutritionContext)
+
   const showChart = () => {
     const data = {
       labels: ['Protein', 'Carbs', 'Fat', 'Fiber'],
