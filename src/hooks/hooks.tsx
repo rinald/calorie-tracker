@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 import type { IDatabaseResponse, IField } from '../../types/interfaces'
 
@@ -23,7 +23,7 @@ const useField: (type: string) => IField = type => {
 }
 
 const useSearch = (query: string) => {
-  const [results, setResults] = useState<IDatabaseResponse | null>(null)
+  const [results, setResults] = useState<IDatabaseResponse>()
 
   useEffect(() => {
     const getSearchResults = async () => {
@@ -37,7 +37,7 @@ const useSearch = (query: string) => {
 
           setResults(response.data)
         } catch (error) {
-          setResults(null)
+          setResults(undefined)
         }
       }
     }
@@ -66,27 +66,32 @@ const useSearch = (query: string) => {
 
       setResults(response.data)
     } catch (error) {
-      setResults(null)
+      setResults(undefined)
     }
   }
 
   const getLinks = async (n: number = 5) => {
     const links: string[] = []
+    let response: AxiosResponse<IDatabaseResponse>
 
-    let response = await axios.get(
-      `${getUrl(
-        'api/food-database/v2/parser',
-      )}&ingr=${query}&nutrition-type=cooking`,
-    )
+    try {
+      response = await axios.get(
+        `${getUrl(
+          'api/food-database/v2/parser',
+        )}&ingr=${query}&nutrition-type=cooking`,
+      )
 
-    links.push(
-      `${getUrl(
-        'api/food-database/v2/parser',
-      )}&ingr=${query}&nutrition-type=cooking`,
-    )
+      links.push(
+        `${getUrl(
+          'api/food-database/v2/parser',
+        )}&ingr=${query}&nutrition-type=cooking`,
+      )
+    } catch (error) {
+      return
+    }
 
     for (let i = 0; i < n - 1; i++) {
-      response = await axios.get(response.data?._links.next.href)
+      response = await axios.get(response?.data?._links?.next?.href || '')
 
       if (response.data?._links === undefined) {
         break

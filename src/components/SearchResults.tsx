@@ -3,6 +3,7 @@ import { useSearch } from '../hooks/hooks'
 
 import Result from './Result'
 import BottomNavigation from './BottomNavigation'
+// import MyDialog from './Dialog'
 
 import Masonry from 'react-masonry-css'
 
@@ -12,7 +13,7 @@ interface Props {
 
 const SearchResults: React.FC<Props> = ({ query }) => {
   const { results, getLinks, loadPage } = useSearch(query)
-  const [links, setLinks] = useState<string[] | null>(null)
+  const [links, setLinks] = useState<string[]>()
   const searchResults = results?.hints
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const SearchResults: React.FC<Props> = ({ query }) => {
             <Result key={index} result={result} />
           ))}
         </Masonry>
+        {/* <MyDialog /> */}
       </div>
 
       <BottomNavigation links={links} loadPage={loadPage} />

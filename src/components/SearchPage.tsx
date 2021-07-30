@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useField } from '../hooks/hooks'
 
 import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
