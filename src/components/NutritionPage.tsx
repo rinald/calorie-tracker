@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
-import { NutritionContext } from '../App'
+import { NutritionContext, FoodListContext } from '../App'
 
 import { Doughnut } from 'react-chartjs-2'
 import { roundAll } from './NutritionTable'
 
 const NutritionPage = () => {
-  let [nutrients, _] = useContext(NutritionContext)
+  let [nutrients] = useContext(NutritionContext)
+  const [foodList] = useContext(FoodListContext)
+
   nutrients = roundAll(nutrients)
 
   const showChart = () => {
@@ -44,11 +46,21 @@ const NutritionPage = () => {
   }
 
   return (
-    <div className='flex flex-col justify-start gap-4 w-96 h-96 mx-auto'>
-      <div className='font-bold text-xl py-2'>
-        Calories: {nutrients.ENERC_KCAL}
+    <div className='flex flex-row gap-4'>
+      <div className='flex flex-col justify-start gap-4 w-96 h-96 mx-auto'>
+        <div className='font-bold text-xl py-2'>
+          Calories: {nutrients.ENERC_KCAL}
+        </div>
+        {showChart()}
       </div>
-      {showChart()}
+      <div className='flex flex-col gap-2 divide-y w-1/2'>
+        {foodList.map((data, index) => (
+          <div key={`${data.label}-${index}`}>
+            {data.label} - {data.servingSize} g, {data.nutrients.ENERC_KCAL}{' '}
+            kcal
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

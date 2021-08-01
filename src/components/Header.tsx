@@ -13,7 +13,7 @@ import { Menu, Transition } from '@headlessui/react'
 
 const Header = () => {
   return (
-    <div className='relative flex flex-row gap-4 justify-between sm:justify-start text-xl text-white font-bold bg-blue-900 p-4'>
+    <div className='flex flex-row sm:relative gap-4 justify-between sm:justify-start text-xl text-white font-bold bg-blue-900 p-4'>
       <Food24Filled />
       <div>Calorie Tracker</div>
       <div>
@@ -30,7 +30,7 @@ const Header = () => {
             leaveTo='transform scale-95 opacity-0'>
             <Menu.Items
               as='div'
-              className='absolute flex right-2 sm:right-auto flex-col bg-blue-600 rounded-md border border-blue-800 p-4'>
+              className='flex sm:absolute sm:right-auto flex-col sm:bg-blue-600 sm:rounded-md sm:border sm:border-blue-800 p-4'>
               <Menu.Item>
                 {({ active }) => (
                   <Link

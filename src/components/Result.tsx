@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
 import { Doughnut } from 'react-chartjs-2'
 
-import { NutritionContext } from '../App'
+import { NutritionContext, FoodListContext } from '../App'
 import type { IFoodData, INutrients } from '../../types/interfaces'
 import { round, roundAll } from './NutritionTable'
 import { useNumberField } from '../hooks/hooks'
@@ -16,7 +16,9 @@ const Result: React.FC<Props> = ({ result }) => {
 
   const [expanded, setExpanded] = useState(false)
   const portionSize = useNumberField(servingValue)
+
   const [nutrients, setNutrients] = useContext(NutritionContext)
+  const [foodList, setFoodList] = useContext(FoodListContext)
 
   const resultNutrients = roundAll(result.food.nutrients, portionSize.value)
 
@@ -30,6 +32,14 @@ const Result: React.FC<Props> = ({ result }) => {
     }
 
     setNutrients(newNutrients)
+    setFoodList([
+      ...foodList,
+      {
+        label: result.food.label,
+        nutrients: resultNutrients,
+        servingSize: servingValue,
+      },
+    ])
   }
 
   const toggleExpand = () => {

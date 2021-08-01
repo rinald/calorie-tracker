@@ -46,6 +46,12 @@ interface IDatabaseResponse {
   _links?: ILinks
 }
 
+interface IFoodSummary {
+  label: string
+  nutrients: INutrients
+  servingSize: number
+}
+
 interface IField {
   type: string
   value: string
@@ -58,4 +64,11 @@ interface INumberField {
   onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
-export { IDatabaseResponse, IField, IFoodData, INutrients, INumberField }
+export {
+  IDatabaseResponse,
+  IField,
+  IFoodData,
+  INutrients,
+  INumberField,
+  IFoodSummary,
+}
