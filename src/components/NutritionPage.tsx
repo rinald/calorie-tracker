@@ -2,9 +2,11 @@ import React, { useContext } from 'react'
 import { NutritionContext } from '../App'
 
 import { Doughnut } from 'react-chartjs-2'
+import { roundAll } from './NutritionTable'
 
 const NutritionPage = () => {
-  const [nutrients, setNutrients] = useContext(NutritionContext)
+  let [nutrients, _] = useContext(NutritionContext)
+  nutrients = roundAll(nutrients)
 
   const showChart = () => {
     const data = {

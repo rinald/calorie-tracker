@@ -6,7 +6,7 @@ import Header from './components/Header'
 import type { INutrients } from '../types/interfaces'
 import NutritionPage from './components/NutritionPage'
 
-const initNutrients: () => INutrients = () => {
+export const initNutrients: () => INutrients = () => {
   return {
     ENERC_KCAL: 0,
     PROCNT: 0,

@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 import axios, { AxiosResponse } from 'axios'
 
-import type { IDatabaseResponse, IField } from '../../types/interfaces'
+import type {
+  IDatabaseResponse,
+  IField,
+  INumberField,
+} from '../../types/interfaces'
 
 const BASE_URL = 'https://api.edamam.com'
 const APP_ID = 'cde0b431'
@@ -18,6 +22,18 @@ const useField: (type: string) => IField = type => {
     value,
     onChange: event => {
       setValue(event.target.value)
+    },
+  }
+}
+
+const useNumberField: (val: number) => INumberField = (val = 0) => {
+  const [value, setValue] = useState(val)
+
+  return {
+    type: 'number',
+    value,
+    onChange: event => {
+      setValue(parseInt(event.target.value))
     },
   }
 }
@@ -64,6 +80,7 @@ const useSearch = (query: string) => {
     try {
       const response = await axios.get(href)
 
+      window.scrollTo(0, 0)
       setResults(response.data)
     } catch (error) {
       setResults(undefined)
@@ -134,4 +151,4 @@ const useSearch = (query: string) => {
   return { results, getLinks, loadPage }
 }
 
-export { useField, useSearch, IField }
+export { useField, useSearch, IField, useNumberField }

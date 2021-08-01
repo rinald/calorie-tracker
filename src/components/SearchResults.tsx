@@ -30,7 +30,7 @@ const SearchResults: React.FC<Props> = ({ query }) => {
           className='my-masonry-grid'
           columnClassName='my-masonry-grid-column'>
           {searchResults?.map((result, index) => (
-            <Result key={index} result={result} />
+            <Result key={`${result.food.label}-${index}`} result={result} />
           ))}
         </Masonry>
         {/* <MyDialog /> */}

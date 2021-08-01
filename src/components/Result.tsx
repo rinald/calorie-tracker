@@ -4,24 +4,29 @@ import { Doughnut } from 'react-chartjs-2'
 
 import { NutritionContext } from '../App'
 import type { IFoodData, INutrients } from '../../types/interfaces'
+import { round, roundAll } from './NutritionTable'
+import { useNumberField } from '../hooks/hooks'
 
 interface Props {
   result: IFoodData
 }
 
 const Result: React.FC<Props> = ({ result }) => {
+  const servingValue = round(result.measures[0].weight)
+
   const [expanded, setExpanded] = useState(false)
+  const portionSize = useNumberField(servingValue)
   const [nutrients, setNutrients] = useContext(NutritionContext)
 
-  const addFood = (data: IFoodData) => {
-    const _nutrients = data.food.nutrients
+  const resultNutrients = roundAll(result.food.nutrients, portionSize.value)
 
+  const addFood = () => {
     const newNutrients: INutrients = {
-      ENERC_KCAL: nutrients.ENERC_KCAL + _nutrients.ENERC_KCAL,
-      PROCNT: nutrients.PROCNT + _nutrients.PROCNT,
-      CHOCDF: nutrients.CHOCDF + _nutrients.CHOCDF,
-      FAT: nutrients.FAT + _nutrients.FAT,
-      FIBTG: nutrients.FIBTG + _nutrients.FIBTG,
+      ENERC_KCAL: nutrients.ENERC_KCAL + resultNutrients.ENERC_KCAL,
+      PROCNT: nutrients.PROCNT + resultNutrients.PROCNT,
+      CHOCDF: nutrients.CHOCDF + resultNutrients.CHOCDF,
+      FAT: nutrients.FAT + resultNutrients.FAT,
+      FIBTG: nutrients.FIBTG + resultNutrients.FIBTG,
     }
 
     setNutrients(newNutrients)
@@ -32,18 +37,16 @@ const Result: React.FC<Props> = ({ result }) => {
   }
 
   const showChart = () => {
-    const nutrients = result.food.nutrients
-
     const data = {
       labels: ['Protein', 'Carbs', 'Fat', 'Fiber'],
       datasets: [
         {
           label: 'Nutritional facts',
           data: [
-            nutrients.PROCNT,
-            nutrients.CHOCDF,
-            nutrients.FAT,
-            nutrients.FIBTG,
+            resultNutrients.PROCNT,
+            resultNutrients.CHOCDF,
+            resultNutrients.FAT,
+            resultNutrients.FIBTG,
           ],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -77,11 +80,21 @@ const Result: React.FC<Props> = ({ result }) => {
             <div>Brand: {result.food.brand}</div>
           )}
           <div>Category: {result.food.category}</div>
-          {expanded && <div>Calories: {result.food.nutrients.ENERC_KCAL}</div>}
+          {expanded && <div>Calories: {resultNutrients.ENERC_KCAL} kcal</div>}
         </div>
       </div>
       <br />
       {expanded && <div className='mx-auto p-4'>{showChart()}</div>}
+      {expanded && (
+        <div className='flex flex-row gap-2'>
+          <span className='my-auto w-full'>Serving size:</span>
+          <input
+            className='bg-transparent w-full text-gray-700 p-2 leading-tight border rounded-md focus:outline-none focus:ring-1 focus:border-indigo-700'
+            {...portionSize}></input>
+          <span className='my-auto'>g</span>
+        </div>
+      )}
+      <br />
 
       <div className='flex flex-row gap-2 justify-between'>
         <button
@@ -89,9 +102,10 @@ const Result: React.FC<Props> = ({ result }) => {
           onClick={toggleExpand}>
           {expanded ? 'Show less' : 'Show more'} <Info24Regular />
         </button>
+
         <button
           className='p-2 bg-blue-500 border border-blue-600 rounded-md text-white'
-          onClick={() => addFood(result)}>
+          onClick={() => addFood()}>
           <Add24Regular />
         </button>
       </div>

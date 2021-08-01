@@ -52,4 +52,10 @@ interface IField {
   onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
-export { IDatabaseResponse, IField, IFoodData, INutrients }
+interface INumberField {
+  type: 'number'
+  value: number
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+}
+
+export { IDatabaseResponse, IField, IFoodData, INutrients, INumberField }
