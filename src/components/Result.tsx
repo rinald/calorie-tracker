@@ -75,6 +75,7 @@ const Result: React.FC<Props> = ({ result }) => {
       ],
       options: {
         responsive: true,
+        animation: false,
       },
     }
 
@@ -94,7 +95,11 @@ const Result: React.FC<Props> = ({ result }) => {
         </div>
       </div>
       <br />
-      {expanded && <div className='mx-auto p-4'>{showChart()}</div>}
+      {expanded && (
+        <div className='mx-auto p-4 w-64 h-64 sm:w-full sm:h-full'>
+          {showChart()}
+        </div>
+      )}
       {expanded && (
         <div className='flex flex-row gap-2'>
           <span className='my-auto w-full'>Serving size:</span>

@@ -16,47 +16,14 @@ const Header = () => {
     <div className='flex flex-row sm:relative gap-4 justify-between sm:justify-start text-xl text-white font-bold bg-blue-900 p-4'>
       <Food24Filled />
       <div>Calorie Tracker</div>
-      <div>
-        <Menu>
-          <Menu.Button>
-            <MoreHorizontal32Filled />
-          </Menu.Button>
-          <Transition
-            enter='transition duration-100 ease-out'
-            enterFrom='transform scale-95 opacity-0'
-            enterTo='transform scale-100 opacity-100'
-            leave='transition duration-75 ease-out'
-            leaveFrom='transform scale-100 opacity-100'
-            leaveTo='transform scale-95 opacity-0'>
-            <Menu.Items
-              as='div'
-              className='flex sm:absolute sm:right-auto flex-col sm:bg-blue-600 sm:rounded-md sm:border sm:border-blue-800 p-4'>
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    className={`${active ? 'font-bold' : 'font-normal'}`}
-                    to='/'>
-                    <div className='inline-flex gap-2'>
-                      {active ? <Home24Filled /> : <Home24Regular />} Home
-                    </div>
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    className={`${active ? 'font-bold' : 'font-normal'}`}
-                    to='/info'>
-                    <div className='inline-flex gap-2'>
-                      {active ? <DataPie24Filled /> : <DataPie24Regular />} Info
-                    </div>
-                  </Link>
-                )}
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      </div>
+      <Link to='/'>
+        <div className='inline-flex gap-2'>{/* <Home24Regular /> */}Home</div>
+      </Link>
+      <Link to='/info'>
+        <div className='inline-flex gap-2'>
+          {/* <DataPie24Regular />  */}Info
+        </div>
+      </Link>
     </div>
   )
 }

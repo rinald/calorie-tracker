@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSearch } from '../hooks/hooks'
+import { usePagination } from '../hooks/hooks'
 
 import Result from './Result'
 import BottomNavigation from './BottomNavigation'
@@ -12,31 +12,30 @@ interface Props {
 }
 
 const SearchResults: React.FC<Props> = ({ query }) => {
-  const { results, getLinks, loadPage } = useSearch(query)
-  const [links, setLinks] = useState<string[]>()
-  const searchResults = results?.hints
-
-  useEffect(() => {
-    if (query !== '') {
-      getLinks().then(links => setLinks(links))
-    }
-  }, [query])
+  const { state, ...paginator } = usePagination(query)
+  const searchResults = state?.results?.hints
 
   return (
     <div>
-      <div>
-        <Masonry
-          breakpointCols={{ default: 4, 1024: 3, 768: 2, 640: 1 }}
-          className='my-masonry-grid'
-          columnClassName='my-masonry-grid-column'>
-          {searchResults?.map(result => (
-            <Result key={`${result.food.foodId}`} result={result} />
-          ))}
-        </Masonry>
-        {/* <MyDialog /> */}
-      </div>
+      {state.isLoading ? (
+        'Loading...'
+      ) : (
+        <>
+          <div>
+            <Masonry
+              breakpointCols={{ default: 4, 1024: 3, 768: 2, 640: 1 }}
+              className='my-masonry-grid'
+              columnClassName='my-masonry-grid-column'>
+              {searchResults?.map(result => (
+                <Result key={`${result.food.foodId}`} result={result} />
+              ))}
+            </Masonry>
+            {/* <MyDialog /> */}
+          </div>
 
-      <BottomNavigation links={links} loadPage={loadPage} />
+          <BottomNavigation state={state} paginator={paginator} />
+        </>
+      )}
     </div>
   )
 }

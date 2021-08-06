@@ -38,7 +38,7 @@ const NutritionPage = () => {
         },
       ],
       options: {
-        responsive: false,
+        responsive: true,
       },
     }
 
@@ -47,7 +47,7 @@ const NutritionPage = () => {
 
   return (
     <div className='flex flex-row gap-4'>
-      <div className='flex flex-col justify-start gap-4 w-96 h-96 mx-auto'>
+      <div className='flex flex-col justify-start gap-4 w-64 h-64 sm:w-96 sm:h-96 mx-auto'>
         <div className='font-bold text-xl py-2'>
           Calories: {nutrients.ENERC_KCAL}
         </div>

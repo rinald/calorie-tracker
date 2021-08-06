@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useReducer, useEffect } from 'react'
 import axios, { AxiosResponse } from 'axios'
 
 import type {
@@ -38,58 +38,40 @@ const useNumberField: (val: number) => INumberField = (val = 0) => {
   }
 }
 
-const useSearch = (query: string) => {
-  const [results, setResults] = useState<IDatabaseResponse>()
+type PaginationState = {
+  isLoading: boolean
+  results?: IDatabaseResponse
+  links: string[]
+  index: number
+}
 
-  useEffect(() => {
-    const getSearchResults = async () => {
-      if (query !== '') {
-        try {
-          const response = await axios.get(
-            `${getUrl(
-              'api/food-database/v2/parser',
-            )}&ingr=${query}&nutrition-type=cooking`,
-          )
+type PaginationResponse = { results?: IDatabaseResponse; links: string[] }
 
-          setResults(response.data)
-        } catch (error) {
-          setResults(undefined)
-        }
-      }
+type PaginationAction =
+  | { type: 'search' }
+  | { type: 'navigate'; to: number }
+  | {
+      type: 'success'
+      data: PaginationResponse
     }
+  | { type: 'error' }
 
-    getSearchResults()
-  }, [query])
+type Reducer<PaginationState, PaginationAction> = (
+  state: PaginationState,
+  action: PaginationAction,
+) => PaginationState
 
-  // const loadNextPage = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       results?._links?.next.href ||
-  //         `${getUrl(
-  //           'api/food-database/v2/parser',
-  //         )}&ingr=${query}&nutrition-type=cooking`,
-  //     )
-
-  //     setResults(response.data)
-  //   } catch (error) {
-  //     setResults(null)
-  //   }
-  // }
-
-  const loadPage = async (href: string) => {
-    try {
-      const response = await axios.get(href)
-
-      window.scrollTo(0, 0)
-      setResults(response.data)
-    } catch (error) {
-      setResults(undefined)
-    }
+const usePagination = (query: string, histSize: number = 5) => {
+  const initialState: PaginationState = {
+    isLoading: false,
+    links: [],
+    index: 0,
   }
 
-  const getLinks = async (n: number = 5) => {
+  const search = async (): Promise<PaginationResponse> => {
     const links: string[] = []
-    let response: AxiosResponse<IDatabaseResponse>
+    let response: AxiosResponse<IDatabaseResponse> | undefined
+    let results: IDatabaseResponse | undefined
 
     try {
       response = await axios.get(
@@ -98,57 +80,136 @@ const useSearch = (query: string) => {
         )}&ingr=${query}&nutrition-type=cooking`,
       )
 
-      links.push(
-        `${getUrl(
-          'api/food-database/v2/parser',
-        )}&ingr=${query}&nutrition-type=cooking`,
-      )
+      results = { ...response }?.data
+
+      if (response) {
+        links.push(
+          `${getUrl(
+            'api/food-database/v2/parser',
+          )}&ingr=${query}&nutrition-type=cooking`,
+        )
+      }
     } catch (error) {
-      return
+      return { results, links }
     }
 
-    for (let i = 0; i < n - 1; i++) {
-      response = await axios.get(response?.data?._links?.next?.href || '')
+    for (let i = 0; i < histSize - 1; i++) {
+      try {
+        response = await axios.get(response?.data?._links?.next?.href || '')
 
-      if (response.data?._links === undefined) {
-        break
-      }
+        if (response?.data?._links === undefined) {
+          break
+        }
 
-      links.push(response.data?._links?.next?.href)
+        links.push(response?.data?._links?.next?.href)
+      } catch (error) {}
     }
 
-    return links
+    return { results, links }
   }
 
-  const getAllLinks = async () => {
-    const links = []
+  const navigate = async (
+    state: PaginationState,
+  ): Promise<PaginationResponse> => {
+    const links = [...state.links]
+    const index = state.index
 
-    let response = await axios.get(
-      `${getUrl(
-        'api/food-database/v2/parser',
-      )}&ingr=${query}&nutrition-type=cooking`,
-    )
+    let response: AxiosResponse<IDatabaseResponse> | undefined
+    let results: IDatabaseResponse | undefined
 
-    links.push(
-      `${getUrl(
-        'api/food-database/v2/parser',
-      )}&ingr=${query}&nutrition-type=cooking`,
-    )
+    try {
+      response = await axios.get(links[index])
 
-    while (response.data?._links !== undefined) {
-      console.log(response.data?._links)
-      response = await axios.get(response.data?._links.next.href)
-      if (response.data?._links === undefined) {
-        break
+      results = { ...response }?.data
+
+      if (response) {
+        links.push(
+          `${getUrl(
+            'api/food-database/v2/parser',
+          )}&ingr=${query}&nutrition-type=cooking`,
+        )
       }
-
-      links.push(response.data?._links?.next?.href)
+    } catch (error) {
+      return { results, links }
     }
 
-    return links
+    for (let i = 0; i < histSize + index - links.length - 1; i++) {
+      try {
+        response = await axios.get(response?.data?._links?.next?.href || '')
+
+        if (response?.data?._links === undefined) {
+          break
+        }
+
+        links.push(response?.data?._links?.next?.href)
+      } catch (error) {}
+    }
+
+    return { results, links }
   }
 
-  return { results, getLinks, loadPage }
+  const paginationReducer: Reducer<PaginationState, PaginationAction> = (
+    state,
+    action,
+  ) => {
+    switch (action.type) {
+      case 'search':
+        return { ...initialState, isLoading: true }
+      case 'navigate':
+        return { ...state, isLoading: true, index: action.to }
+      case 'success':
+        return { ...state, ...action.data, isLoading: false }
+      case 'error':
+        return initialState
+      default:
+        return initialState
+    }
+  }
+  const [state, dispatch] = useReducer(paginationReducer, initialState)
+
+  const goBack = () => {
+    const { index } = state
+
+    if (index !== 0) {
+      dispatch({ type: 'navigate', to: index - 1 })
+    }
+  }
+
+  const goForward = () => {
+    const { index } = state
+
+    dispatch({ type: 'navigate', to: index + 1 })
+  }
+
+  const goTo = (index: number) => {
+    console.log(index)
+    dispatch({ type: 'navigate', to: index })
+  }
+
+  useEffect(() => {
+    navigate(state).then(data => {
+      dispatch({ type: 'success', data })
+      console.log('Changed page')
+    })
+  }, [state.index])
+
+  useEffect(() => {
+    dispatch({ type: 'search' })
+    search().then(data => {
+      dispatch({ type: 'success', data })
+      console.log('Loaded data')
+    })
+  }, [query])
+
+  return { state, goBack, goForward, goTo }
 }
 
-export { useField, useSearch, IField, useNumberField }
+export {
+  getUrl,
+  useField,
+  IField,
+  useNumberField,
+  usePagination,
+  PaginationAction,
+  PaginationState,
+}
