@@ -1,9 +1,9 @@
 import React from 'react'
 
-import type { PaginationState } from '../hooks/hooks'
+import type { PaginationState } from '../hooks/paginationHook'
 import { ArrowLeft24Filled, ArrowRight24Filled } from '@fluentui/react-icons'
 
-interface Props {
+type Props = {
   state: PaginationState
   paginator: {
     goBack: () => void

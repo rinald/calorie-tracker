@@ -3,12 +3,12 @@ import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
 import { Doughnut } from 'react-chartjs-2'
 
 import { NutritionContext, FoodListContext } from '../App'
-import type { IFoodData, INutrients } from '../../types/interfaces'
-import { round, roundAll } from './NutritionTable'
-import { useNumberField } from '../hooks/hooks'
+import type { FoodData, Nutrients } from '../../types/types'
+import { round, roundAll } from '../util'
+import { useNumberField } from '../hooks/inputHook'
 
-interface Props {
-  result: IFoodData
+type Props = {
+  result: FoodData
 }
 
 const Result: React.FC<Props> = ({ result }) => {
@@ -23,7 +23,7 @@ const Result: React.FC<Props> = ({ result }) => {
   const resultNutrients = roundAll(result.food.nutrients, portionSize.value)
 
   const addFood = () => {
-    const newNutrients: INutrients = {
+    const newNutrients: Nutrients = {
       ENERC_KCAL: nutrients.ENERC_KCAL + resultNutrients.ENERC_KCAL,
       PROCNT: nutrients.PROCNT + resultNutrients.PROCNT,
       CHOCDF: nutrients.CHOCDF + resultNutrients.CHOCDF,

@@ -1,51 +1,16 @@
-import { useState, useReducer, useEffect } from 'react'
+import { useReducer, useEffect } from 'react'
 import axios, { AxiosResponse } from 'axios'
-
-import type {
-  IDatabaseResponse,
-  IField,
-  INumberField,
-} from '../../types/interfaces'
-
-const BASE_URL = 'https://api.edamam.com'
-const APP_ID = 'cde0b431'
-const APP_KEY = 'c3065548cc9be81f078ee6777a929550'
-
-const getUrl = (endpoint: string) =>
-  `${BASE_URL}/${endpoint}?app_id=${APP_ID}&app_key=${APP_KEY}`
-
-const useField: (type: string) => IField = type => {
-  const [value, setValue] = useState('')
-
-  return {
-    type,
-    value,
-    onChange: event => {
-      setValue(event.target.value)
-    },
-  }
-}
-
-const useNumberField: (val: number) => INumberField = (val = 0) => {
-  const [value, setValue] = useState(val)
-
-  return {
-    type: 'number',
-    value,
-    onChange: event => {
-      setValue(parseInt(event.target.value))
-    },
-  }
-}
+import type { DatabaseResponse } from '../../types/types'
+import { getUrl } from '../util'
 
 type PaginationState = {
   isLoading: boolean
-  results?: IDatabaseResponse
+  results?: DatabaseResponse
   links: string[]
   index: number
 }
 
-type PaginationResponse = { results?: IDatabaseResponse; links: string[] }
+type PaginationResponse = { results?: DatabaseResponse; links: string[] }
 
 type PaginationAction =
   | { type: 'search' }
@@ -70,8 +35,8 @@ const usePagination = (query: string, histSize: number = 5) => {
 
   const search = async (): Promise<PaginationResponse> => {
     const links: string[] = []
-    let response: AxiosResponse<IDatabaseResponse> | undefined
-    let results: IDatabaseResponse | undefined
+    let response: AxiosResponse<DatabaseResponse> | undefined
+    let results: DatabaseResponse | undefined
 
     try {
       response = await axios.get(
@@ -114,8 +79,8 @@ const usePagination = (query: string, histSize: number = 5) => {
     const links = [...state.links]
     const index = state.index
 
-    let response: AxiosResponse<IDatabaseResponse> | undefined
-    let results: IDatabaseResponse | undefined
+    let response: AxiosResponse<DatabaseResponse> | undefined
+    let results: DatabaseResponse | undefined
 
     try {
       response = await axios.get(links[index])
@@ -165,6 +130,7 @@ const usePagination = (query: string, histSize: number = 5) => {
         return initialState
     }
   }
+
   const [state, dispatch] = useReducer(paginationReducer, initialState)
 
   const goBack = () => {
@@ -182,14 +148,12 @@ const usePagination = (query: string, histSize: number = 5) => {
   }
 
   const goTo = (index: number) => {
-    console.log(index)
     dispatch({ type: 'navigate', to: index })
   }
 
   useEffect(() => {
     navigate(state).then(data => {
       dispatch({ type: 'success', data })
-      console.log('Changed page')
     })
   }, [state.index])
 
@@ -197,19 +161,10 @@ const usePagination = (query: string, histSize: number = 5) => {
     dispatch({ type: 'search' })
     search().then(data => {
       dispatch({ type: 'success', data })
-      console.log('Loaded data')
     })
   }, [query])
 
   return { state, goBack, goForward, goTo }
 }
 
-export {
-  getUrl,
-  useField,
-  IField,
-  useNumberField,
-  usePagination,
-  PaginationAction,
-  PaginationState,
-}
+export { usePagination, PaginationState }

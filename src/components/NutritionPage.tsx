@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { NutritionContext, FoodListContext } from '../App'
 
 import { Doughnut } from 'react-chartjs-2'
-import { roundAll } from './NutritionTable'
+import { roundAll } from '../util'
 
 const NutritionPage = () => {
   let [nutrients] = useContext(NutritionContext)

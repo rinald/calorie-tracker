@@ -1,25 +1,10 @@
 import React from 'react'
 
-import type { INutrients } from '../../types/interfaces'
+import type { Nutrients } from '../../types/types'
+import { roundAll } from '../util'
 
-import { initNutrients } from '../App'
-
-interface Props {
-  nutrients: INutrients
-}
-
-export function round(value: number, portionSize = 100): number {
-  return Math.round((value * portionSize) / 10) / 10
-}
-
-export function roundAll(nutrients: INutrients, portionSize = 100): INutrients {
-  let newNutrients = initNutrients()
-
-  for (const [key, value] of Object.entries(nutrients)) {
-    newNutrients[key] = round(value, portionSize)
-  }
-
-  return newNutrients
+type Props = {
+  nutrients: Nutrients
 }
 
 const NutritionTable: React.FC<Props> = ({ nutrients }) => {

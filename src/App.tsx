@@ -3,30 +3,22 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import SearchPage from './components/SearchPage'
 import Header from './components/Header'
-import type { INutrients, IFoodSummary } from '../types/interfaces'
+import type { Nutrients, FoodSummary } from '../types/types'
 import NutritionPage from './components/NutritionPage'
 
-export const initNutrients: () => INutrients = () => {
-  return {
-    ENERC_KCAL: 0,
-    PROCNT: 0,
-    CHOCDF: 0,
-    FAT: 0,
-    FIBTG: 0,
-  }
-}
+import { initNutrients } from './util'
 
 const NutritionContext = createContext<
-  [INutrients, React.Dispatch<React.SetStateAction<INutrients>>]
+  [Nutrients, React.Dispatch<React.SetStateAction<Nutrients>>]
 >([initNutrients(), () => {}])
 
 const FoodListContext = createContext<
-  [IFoodSummary[], React.Dispatch<React.SetStateAction<IFoodSummary[]>>]
+  [FoodSummary[], React.Dispatch<React.SetStateAction<FoodSummary[]>>]
 >([[], () => {}])
 
 const App = () => {
-  const [nutrients, setNutrients] = useState<INutrients>(initNutrients())
-  const [foodList, setFoodList] = useState<IFoodSummary[]>([])
+  const [nutrients, setNutrients] = useState<Nutrients>(initNutrients())
+  const [foodList, setFoodList] = useState<FoodSummary[]>([])
 
   return (
     <Router>

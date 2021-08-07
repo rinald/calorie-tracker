@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useField } from '../hooks/hooks'
+import { useTextField } from '../hooks/inputHook'
 import { Search24Filled } from '@fluentui/react-icons'
 
-interface Props {
+type Props = {
   onSearch: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     value: string,
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SearchBar: React.FC<Props> = ({ onSearch }) => {
-  const textField = useField('text')
+  const textField = useTextField('text')
 
   return (
     <div>

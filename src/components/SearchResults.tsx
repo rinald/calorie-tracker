@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { usePagination } from '../hooks/hooks'
+import React from 'react'
+import { usePagination } from '../hooks/paginationHook'
 
 import Result from './Result'
 import BottomNavigation from './BottomNavigation'
-// import MyDialog from './Dialog'
 
 import Masonry from 'react-masonry-css'
 
-interface Props {
+type Props = {
   query: string
 }
 
@@ -30,7 +29,6 @@ const SearchResults: React.FC<Props> = ({ query }) => {
                 <Result key={`${result.food.foodId}`} result={result} />
               ))}
             </Masonry>
-            {/* <MyDialog /> */}
           </div>
 
           <BottomNavigation state={state} paginator={paginator} />
