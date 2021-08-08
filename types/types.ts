@@ -4,12 +4,10 @@ type Measure = {
   weight: number
 }
 
+type Nutrient = 'ENERC_KCAL' | 'PROCNT' | 'FAT' | 'CHOCDF' | 'FIBTG'
+
 type Nutrients = {
-  ENERC_KCAL: number
-  PROCNT: number
-  FAT: number
-  CHOCDF: number
-  FIBTG: number
+  [key in Nutrient]: number
 }
 
 type FoodInfo = {
@@ -50,4 +48,4 @@ type FoodSummary = {
   servingSize: number
 }
 
-export { DatabaseResponse, FoodData, Nutrients, FoodSummary }
+export { DatabaseResponse, FoodData, Nutrients, FoodSummary, Nutrient }

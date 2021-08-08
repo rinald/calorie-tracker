@@ -2,7 +2,7 @@ const BASE_URL = 'https://api.edamam.com'
 const APP_ID = 'cde0b431'
 const APP_KEY = 'c3065548cc9be81f078ee6777a929550'
 
-import type { Nutrients } from '../types/types'
+import type { Nutrients, Nutrient } from '../types/types'
 
 const getUrl = (endpoint: string) =>
   `${BASE_URL}/${endpoint}?app_id=${APP_ID}&app_key=${APP_KEY}`
@@ -25,7 +25,7 @@ function roundAll(nutrients: Nutrients, portionSize = 100): Nutrients {
   let newNutrients = initNutrients()
 
   for (const [key, value] of Object.entries(nutrients)) {
-    newNutrients[key] = round(value, portionSize)
+    newNutrients[key as Nutrient] = round(value, portionSize)
   }
 
   return newNutrients
