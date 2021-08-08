@@ -11,12 +11,12 @@ type Props = {
 }
 
 const SearchResults: React.FC<Props> = ({ query }) => {
-  const { state, ...paginator } = usePagination(query)
-  const searchResults = state?.results?.hints
+  const paginator = usePagination(query)
+  const searchResults = paginator.state?.results?.hints
 
   return (
     <div>
-      {state.isLoading ? (
+      {paginator.state.isLoading ? (
         'Loading...'
       ) : (
         <>
@@ -25,13 +25,15 @@ const SearchResults: React.FC<Props> = ({ query }) => {
               breakpointCols={{ default: 4, 1024: 3, 768: 2, 640: 1 }}
               className='my-masonry-grid'
               columnClassName='my-masonry-grid-column'>
-              {searchResults?.map(result => (
-                <Result key={`${result.food.foodId}`} result={result} />
+              {searchResults?.map((result, index) => (
+                <Result
+                  key={`${result.food.foodId}-${index}`}
+                  result={result}
+                />
               ))}
             </Masonry>
           </div>
-
-          <BottomNavigation state={state} paginator={paginator} />
+          <BottomNavigation {...paginator} />
         </>
       )}
     </div>

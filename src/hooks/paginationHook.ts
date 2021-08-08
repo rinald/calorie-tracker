@@ -26,7 +26,15 @@ type Reducer<PaginationState, PaginationAction> = (
   action: PaginationAction,
 ) => PaginationState
 
-const usePagination = (query: string, histSize: number = 5) => {
+type Paginator = {
+  state: PaginationState
+  histSize: number
+  goBack: () => void
+  goForward: () => void
+  goTo: (index: number) => void
+}
+
+const usePagination = (query: string, histSize: number = 5): Paginator => {
   const initialState: PaginationState = {
     isLoading: false,
     links: [],
@@ -84,23 +92,20 @@ const usePagination = (query: string, histSize: number = 5) => {
 
     try {
       response = await axios.get(links[index])
-
       results = { ...response }?.data
-
-      if (response) {
-        links.push(
-          `${getUrl(
-            'api/food-database/v2/parser',
-          )}&ingr=${query}&nutrition-type=cooking`,
-        )
-      }
     } catch (error) {
       return { results, links }
     }
 
-    for (let i = 0; i < histSize + index - links.length - 1; i++) {
+    try {
+      response = await axios.get([...links].pop() ?? '')
+    } catch (error) {
+      return { results, links }
+    }
+
+    for (let i = 0; i < histSize + index - state.links.length; i++) {
       try {
-        response = await axios.get(response?.data?._links?.next?.href || '')
+        response = await axios.get(response?.data?._links?.next?.href ?? '')
 
         if (response?.data?._links === undefined) {
           break
@@ -121,7 +126,11 @@ const usePagination = (query: string, histSize: number = 5) => {
       case 'search':
         return { ...initialState, isLoading: true }
       case 'navigate':
-        return { ...state, isLoading: true, index: action.to }
+        if (action.to === state.index) {
+          return { ...state }
+        } else {
+          return { ...state, isLoading: true, index: action.to }
+        }
       case 'success':
         return { ...state, ...action.data, isLoading: false }
       case 'error':
@@ -152,19 +161,23 @@ const usePagination = (query: string, histSize: number = 5) => {
   }
 
   useEffect(() => {
-    navigate(state).then(data => {
-      dispatch({ type: 'success', data })
-    })
+    if (state.index !== 0 || state.links.length !== 0) {
+      navigate(state).then(data => {
+        dispatch({ type: 'success', data })
+      })
+    }
   }, [state.index])
 
   useEffect(() => {
-    dispatch({ type: 'search' })
-    search().then(data => {
-      dispatch({ type: 'success', data })
-    })
+    if (query !== '') {
+      dispatch({ type: 'search' })
+      search().then(data => {
+        dispatch({ type: 'success', data })
+      })
+    }
   }, [query])
 
-  return { state, goBack, goForward, goTo }
+  return { state, histSize, goBack, goForward, goTo }
 }
 
-export { usePagination, PaginationState }
+export { usePagination, PaginationState, Paginator }
