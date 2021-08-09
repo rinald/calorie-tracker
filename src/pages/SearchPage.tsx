@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import SearchBar from './SearchBar'
-import SearchResults from './SearchResults'
+import SearchBar from '../components/SearchBar'
+import SearchResults from '../components/SearchResults'
 
 const SearchPage = () => {
   const [query, setQuery] = useState('')

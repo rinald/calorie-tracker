@@ -38,24 +38,28 @@ const NutritionPage = () => {
         },
       ],
       options: {
-        responsive: true,
+        responsive: false,
       },
     }
 
-    return <Doughnut data={data} />
+    return (
+      <div className='h-64'>
+        <Doughnut data={data} />
+      </div>
+    )
   }
 
   return (
-    <div className='flex flex-row gap-4'>
-      <div className='flex flex-col justify-start gap-4 w-64 h-64 sm:w-96 sm:h-96 mx-auto'>
+    <div className='flex flex-col sm:flex-row gap-4 h-auto'>
+      <div className='flex flex-col justify-start gap-4 w-64 h-96 mx-auto bg-gray-50 m-2 border rounded-md border-gray-200 px-5'>
         <div className='font-bold text-xl py-2'>
           Calories: {nutrients.ENERC_KCAL}
         </div>
         {showChart()}
       </div>
-      <div className='flex flex-col gap-2 divide-y w-1/2'>
+      <div className='flex flex-col mx-auto sm:mx-2 divide-y w-1/2 bg-gray-50 m-2 border rounded-md border-gray-200'>
         {foodList.map((data, index) => (
-          <div key={`${data.label}-${index}`}>
+          <div className='p-2' key={`${data.label}-${index}`}>
             {data.label} - {data.servingSize} g, {data.nutrients.ENERC_KCAL}{' '}
             kcal
           </div>

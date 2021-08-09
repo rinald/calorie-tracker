@@ -68,13 +68,13 @@ const usePagination = (query: string, histSize: number = 5): Paginator => {
 
     for (let i = 0; i < histSize - 1; i++) {
       try {
-        response = await axios.get(response?.data?._links?.next?.href || '')
+        response = await axios.get(response?.data._links?.next.href || '')
 
-        if (response?.data?._links === undefined) {
+        if (response?.data._links === undefined) {
           break
         }
 
-        links.push(response?.data?._links?.next?.href)
+        links.push(response.data._links.next.href)
       } catch (error) {}
     }
 
@@ -105,13 +105,13 @@ const usePagination = (query: string, histSize: number = 5): Paginator => {
 
     for (let i = 0; i < histSize + index - state.links.length; i++) {
       try {
-        response = await axios.get(response?.data?._links?.next?.href ?? '')
+        response = await axios.get(response?.data._links?.next.href ?? '')
 
-        if (response?.data?._links === undefined) {
+        if (response?.data._links === undefined) {
           break
         }
 
-        links.push(response?.data?._links?.next?.href)
+        links.push(response.data._links.next.href)
       } catch (error) {}
     }
 
@@ -162,22 +162,18 @@ const usePagination = (query: string, histSize: number = 5): Paginator => {
 
   useEffect(() => {
     if (state.index !== 0 || state.links.length !== 0) {
-      navigate(state).then(data => {
-        dispatch({ type: 'success', data })
-      })
+      navigate(state).then(data => dispatch({ type: 'success', data }))
     }
   }, [state.index])
 
   useEffect(() => {
     if (query !== '') {
       dispatch({ type: 'search' })
-      search().then(data => {
-        dispatch({ type: 'success', data })
-      })
+      search().then(data => dispatch({ type: 'success', data }))
     }
   }, [query])
 
   return { state, histSize, goBack, goForward, goTo }
 }
 
-export { usePagination, PaginationState, Paginator }
+export { usePagination, Paginator }

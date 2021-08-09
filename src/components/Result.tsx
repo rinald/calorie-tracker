@@ -11,6 +11,21 @@ type Props = {
   result: FoodData
 }
 
+const ResultPlaceholder = () => {
+  return (
+    <div className='animate-pulse flex flex-col gap-2 break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
+      <div className='h-4 bg-gray-400 rounded w-12'></div>
+      <div className='h-4 bg-gray-400 rounded w-24'></div>
+      <br />
+
+      <div className='flex flex-row gap-2 justify-between'>
+        <div className='h-8 bg-gray-400 rounded w-24'></div>
+        <div className='h-8 bg-gray-400 rounded w-12'></div>
+      </div>
+    </div>
+  )
+}
+
 const Result: React.FC<Props> = ({ result }) => {
   const servingValue = round(result.measures[0].weight)
 
@@ -129,3 +144,4 @@ const Result: React.FC<Props> = ({ result }) => {
 }
 
 export default Result
+export { ResultPlaceholder }
