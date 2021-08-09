@@ -25,13 +25,18 @@ const SearchResults: React.FC<Props> = ({ query }) => {
           : searchResults.map((result, index) => (
               <Result key={`${result.food.foodId}-${index}`} result={result} />
             ))} */}
-        {searchResults?.map((result, index) =>
-          paginator.state.isLoading ? (
-            <ResultPlaceholder />
-          ) : (
-            <Result key={`${result.food.foodId}-${index}`} result={result} />
-          ),
-        )}
+        {searchResults === undefined && paginator.state.isLoading
+          ? [...Array(20)].map(_ => <ResultPlaceholder />)
+          : searchResults?.map((result, index) =>
+              paginator.state.isLoading ? (
+                <ResultPlaceholder />
+              ) : (
+                <Result
+                  key={`${result.food.foodId}-${index}`}
+                  result={result}
+                />
+              ),
+            )}
       </Masonry>
 
       <BottomNavigation {...paginator} />

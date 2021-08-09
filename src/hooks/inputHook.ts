@@ -25,13 +25,13 @@ function useTextField(type: string, val = ''): TextField {
 }
 
 function useNumberField(val = 0): NumberField {
-  const [value, setValue] = useState(val)
+  const [value, setValue] = useState(isNaN(val) ? 0 : val)
 
   return {
     type: 'number',
     value,
     onChange: event => {
-      setValue(parseInt(event.target.value))
+      setValue(event.target.value !== '' ? parseInt(event.target.value) : 0)
     },
   }
 }

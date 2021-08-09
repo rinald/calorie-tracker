@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Add24Regular, Info24Regular } from '@fluentui/react-icons'
 import { Doughnut } from 'react-chartjs-2'
 
+import NutritionTable from './NutritionTable'
 import { NutritionContext, FoodListContext } from '../App'
 import type { FoodData, Nutrients } from '../../types/types'
 import { round, roundAll } from '../util'
@@ -14,13 +15,13 @@ type Props = {
 const ResultPlaceholder = () => {
   return (
     <div className='animate-pulse flex flex-col gap-2 break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
-      <div className='h-4 bg-gray-400 rounded w-12'></div>
-      <div className='h-4 bg-gray-400 rounded w-24'></div>
+      <div className='h-8 w-12 bg-gray-400 rounded'></div>
+      <div className='h-6 w-24 bg-gray-400 rounded'></div>
       <br />
 
       <div className='flex flex-row gap-2 justify-between'>
-        <div className='h-8 bg-gray-400 rounded w-24'></div>
-        <div className='h-8 bg-gray-400 rounded w-12'></div>
+        <div className='h-10 w-32 bg-gray-400 rounded'></div>
+        <div className='h-10 w-10 bg-gray-400 rounded'></div>
       </div>
     </div>
   )
@@ -61,42 +62,6 @@ const Result: React.FC<Props> = ({ result }) => {
     setExpanded(!expanded)
   }
 
-  const showChart = () => {
-    const data = {
-      labels: ['Protein', 'Carbs', 'Fat', 'Fiber'],
-      datasets: [
-        {
-          label: 'Nutritional facts',
-          data: [
-            resultNutrients.PROCNT,
-            resultNutrients.CHOCDF,
-            resultNutrients.FAT,
-            resultNutrients.FIBTG,
-          ],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-          ],
-          borderWidth: 1,
-        },
-      ],
-      options: {
-        responsive: true,
-        animation: false,
-      },
-    }
-
-    return <Doughnut data={data} />
-  }
-
   return (
     <div className='break-inside bg-gray-50 border-gray-200 border rounded-lg p-2 m-2 '>
       <div className='text-2xl font-bold'>{result.food.label}</div>
@@ -106,13 +71,12 @@ const Result: React.FC<Props> = ({ result }) => {
             <div>Brand: {result.food.brand}</div>
           )}
           <div>Category: {result.food.category}</div>
-          {expanded && <div>Calories: {resultNutrients.ENERC_KCAL} kcal</div>}
         </div>
       </div>
       <br />
       {expanded && (
-        <div className='mx-auto p-4 w-64 h-64 sm:w-full sm:h-full'>
-          {showChart()}
+        <div className='mx-auto py-4'>
+          <NutritionTable nutrients={resultNutrients} />
         </div>
       )}
       {expanded && (
@@ -120,6 +84,7 @@ const Result: React.FC<Props> = ({ result }) => {
           <span className='my-auto w-full'>Serving size:</span>
           <input
             className='bg-transparent w-full text-gray-700 p-2 leading-tight border rounded-md focus:outline-none focus:ring-1 focus:border-indigo-700'
+            min='0'
             {...portionSize}></input>
           <span className='my-auto'>g</span>
         </div>
